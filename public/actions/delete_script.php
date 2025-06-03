@@ -1,13 +1,13 @@
 <?php
 session_start();
-require_once '/etc/php_config/db_config.php'; // Usando o caminho mapeado
+require_once '/etc/php_config/db_config.php';
 
 if (isset($_GET['id'])) {
     $id_solicitacao = filter_var($_GET['id'], FILTER_VALIDATE_INT);
 
     if ($id_solicitacao === false || $id_solicitacao <= 0) {
         $_SESSION['mensagem_erro'] = "ID da solicitação inválido para deleção.";
-        header("Location: /views/view.php"); // Caminho absoluto
+        header("Location: /views/view.php");
         exit;
     }
 
@@ -32,6 +32,5 @@ if (isset($_GET['id'])) {
     $_SESSION['mensagem_erro'] = "Nenhum ID de solicitação fornecido para deletar.";
 }
 
-header("Location: /views/view.php"); // Caminho absoluto
+header("Location: /views/view.php");
 exit;
-?>

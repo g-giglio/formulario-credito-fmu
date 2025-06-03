@@ -8,14 +8,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (!$id_solicitacao) {
         $_SESSION['mensagem_erro_update'] = "ID da solicitação inválido ou ausente para atualização.";
-        // Se o ID estiver faltando, não podemos nem redirecionar para a página de edição correta.
-        // Melhor redirecionar para a lista geral neste caso.
         header("Location: /views/view.php");
         exit;
     }
 
-    // Coleta e LIMPEZA dos dados (certifique-se que os names no form de edição correspondem)
-    // Use os mesmos nomes de 'name' do seu formulário de edição
     $indicador_nome = isset($_POST['indicador_nome']) ? trim($_POST['indicador_nome']) : '';
     $indicador_celular_mascarado = isset($_POST['indicador_celular']) ? trim($_POST['indicador_celular']) : '';
     $empresa_valor_post = isset($_POST['empresa']) ? trim($_POST['empresa']) : '';
@@ -56,7 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $parecer_valor_post = isset($_POST['parecer']) ? trim($_POST['parecer']) : '';
     $finalidade_valor_post = isset($_POST['finalidade']) ? trim($_POST['finalidade']) : '';
 
-    // LIMPEZA
     $indicador_celular_limpo = preg_replace('/\D/', '', $indicador_celular_mascarado);
     $celular_td_limpo = preg_replace('/\D/', '', $celular_td_mascarado);
     $cnpj_limpo = preg_replace('/\D/', '', $cnpj_mascarado);
@@ -65,12 +60,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $valor_temp = str_replace('.', '', $valor_temp);
     $valor_limpo_final = str_replace(',', '.', $valor_temp);
 
-    // Adicionar validações de servidor aqui
-
     $pdo = null;
     try {
         $pdo = new PDO($dsn, $db_user, $db_pass, $options);
-        // SQL UPDATE com nomes de colunas corretos
         $sql = "UPDATE solicitacoes_credito SET
                     indicador_nome = :indicador_nome, indicador_celular = :indicador_celular, empresa = :empresa,
                     cnpj = :cnpj, razao_social = :razao_social, nome_fantasia = :nome_fantasia, uf = :uf, municipio = :municipio,
@@ -81,7 +73,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 WHERE id = :id_solicitacao";
         $stmt = $pdo->prepare($sql);
 
-        // Bind
         $stmt->bindParam(':indicador_nome', $indicador_nome);
         $stmt->bindParam(':indicador_celular', $indicador_celular_limpo);
         $stmt->bindParam(':empresa', $empresa_valor_post);
@@ -106,13 +97,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $stmt->execute();
         $_SESSION['mensagem_sucesso'] = "Solicitação ID {$id_solicitacao} atualizada com sucesso!";
-        header("Location: /views/view.php"); // Redireciona para a listagem
+        header("Location: /views/view.php");
         exit;
 
     } catch (PDOException $e) {
         error_log("Erro ao atualizar solicitação ID {$id_solicitacao}: " . $e->getMessage());
         $_SESSION['mensagem_erro_update'] = "Erro ao atualizar. Detalhe (DEV): " . $e->getMessage();
-        header("Location: /views/edit_form.php?id=" . $id_solicitacao); // Volta para o form de edição
+        header("Location: /views/edit_form.php?id=" . $id_solicitacao);
         exit;
     }
 } else {

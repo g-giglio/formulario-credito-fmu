@@ -1,17 +1,13 @@
 <?php
 session_start();
-require_once '/etc/php_config/db_config.php'; // Usando o caminho mapeado
+require_once '/etc/php_config/db_config.php';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Coleta e LIMPEZA dos dados (MUITO IMPORTANTE)
-    // Certifique-se que as chaves de $_POST correspondem aos 'name' do seu HTML (ex: $_POST['indicador_nome'])
-    // Vou usar os nomes das colunas do banco como chaves aqui para clareza
     $indicador_nome = isset($_POST['indicador_nome']) ? trim($_POST['indicador_nome']) : '';
     $indicador_celular_mascarado = isset($_POST['indicador_celular']) ? trim($_POST['indicador_celular']) : '';
     $empresa_valor_post = isset($_POST['empresa']) ? trim($_POST['empresa']) : '';
     $cnpj_mascarado = isset($_POST['cnpj']) ? trim($_POST['cnpj']) : '';
     
-    // Campos da API (são disabled no form de criação, não virão no POST usualmente, mas se vierem)
     $razao_social = isset($_POST['razao_social']) ? trim($_POST['razao_social']) : null;
     $nome_fantasia = isset($_POST['nome_fantasia']) ? trim($_POST['nome_fantasia']) : null;
     $uf = isset($_POST['uf']) ? trim($_POST['uf']) : null;
@@ -47,7 +43,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $parecer_valor_post = isset($_POST['parecer']) ? trim($_POST['parecer']) : '';
     $finalidade_valor_post = isset($_POST['finalidade']) ? trim($_POST['finalidade']) : '';
 
-    // --- LIMPEZA ---
     $indicador_celular_limpo = preg_replace('/\D/', '', $indicador_celular_mascarado);
     $celular_td_limpo = preg_replace('/\D/', '', $celular_td_mascarado);
     $cnpj_limpo = preg_replace('/\D/', '', $cnpj_mascarado);
@@ -56,12 +51,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $valor_temp = str_replace('.', '', $valor_temp);
     $valor_limpo_final = str_replace(',', '.', $valor_temp);
 
-    // Adicionar validações de servidor aqui antes de tentar inserir
-
     $pdo = null;
     try {
         $pdo = new PDO($dsn, $db_user, $db_pass, $options);
-        // SQL com nomes de colunas do seu banco
         $sql = "INSERT INTO solicitacoes_credito (
                     indicador_nome, indicador_celular, empresa, cnpj, razao_social, nome_fantasia, uf, municipio,
                     nome_td, celular_td, email_td, cpf_td,
@@ -75,15 +67,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 )";
         $stmt = $pdo->prepare($sql);
 
-        // Bind usando as variáveis limpas e os nomes de coluna do banco
         $stmt->bindParam(':indicador_nome', $indicador_nome);
         $stmt->bindParam(':indicador_celular', $indicador_celular_limpo);
         $stmt->bindParam(':empresa', $empresa_valor_post);
         $stmt->bindParam(':cnpj', $cnpj_limpo);
-        $stmt->bindParam(':razao_social', $razao_social); // Será null se não vier do POST
-        $stmt->bindParam(':nome_fantasia', $nome_fantasia); // Será null se não vier do POST
-        $stmt->bindParam(':uf', $uf);                     // Será null se não vier do POST
-        $stmt->bindParam(':municipio', $municipio);           // Será null se não vier do POST
+        $stmt->bindParam(':razao_social', $razao_social);
+        $stmt->bindParam(':nome_fantasia', $nome_fantasia);
+        $stmt->bindParam(':uf', $uf);
+        $stmt->bindParam(':municipio', $municipio);
         $stmt->bindParam(':nome_td', $nome_td);
         $stmt->bindParam(':celular_td', $celular_td_limpo);
         $stmt->bindParam(':email_td', $email_td);
@@ -103,12 +94,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         error_log("Erro ao inserir solicitação: " . $e->getMessage());
         $_SESSION['mensagem_erro'] = "Erro ao enviar solicitação. Detalhe (DEV): " . $e->getMessage();
     }
-    header("Location: /views/view.php"); // Redireciona para a listagem
+    header("Location: /views/view.php");
     exit;
 } else {
-    // Se não for POST, redireciona ou mostra erro
     $_SESSION['mensagem_erro'] = "Acesso inválido ao script de submissão.";
-    header("Location: /index.html"); // Volta para o formulário de criação
+    header("Location: /index.html");
     exit;
 }
 ?>
