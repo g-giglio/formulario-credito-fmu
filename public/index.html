@@ -4,16 +4,11 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Formulário de Solicitação de Crédito</title>
-  <link rel="icon" type="image/png" href="images/partnership_1.png">
-  <link rel="stylesheet" href="/css/styles.css" />
-</head>
+  <link rel="icon" type="image/png" href="images/partnership_1.png"> <link rel="stylesheet" href="css/styles.css" /> </head>
 <body>
   <div class="form-container">
     <h1>Solicitação de Crédito</h1>
-    <form id="credito-form">
-
-      <!-- Seção 1: Dados do Indicador -->
-      <fieldset>
+    <form id="credito-form" method="POST" action="functions/submit.php"> <fieldset>
         <legend>Dados de Quem Está Indicando</legend>
         <label for="indicador-nome">Nome Completo:</label>
         <input type="text" id="indicador-nome" name="indicador-nome" required />
@@ -31,7 +26,6 @@
         </select>
       </fieldset>
 
-      <!-- Seção 2: Dados do Cliente -->
       <fieldset>
         <legend>Dados do Cliente</legend>
         <label for="cnpj">CNPJ:</label>
@@ -68,7 +62,6 @@
         <span class="erro" id="erro-cpf-td"></span>
       </fieldset>
 
-      <!-- Seção 3: Quadro Societário -->
       <fieldset>
         <legend>Quadro Societário</legend>
         <label>O cliente tem outros sócios (CPFs)?</label>
@@ -84,7 +77,6 @@
         </div>
       </fieldset>
 
-      <!-- Seção 4: Grupo Econômico -->
       <fieldset>
         <legend>Grupo Econômico</legend>
         <label>O cliente tem outras empresas (CNPJs)?</label>
@@ -100,7 +92,6 @@
         </div>
       </fieldset>
 
-      <!-- Seção 5: Dados da Operação -->
       <fieldset>
         <legend>Dados da Operação</legend>
         <label for="valor">Valor solicitado:</label>
@@ -126,7 +117,6 @@
         <textarea id="finalidade" name="finalidade" rows="3" required></textarea>
       </fieldset>
 
-      <!-- Seção 6: Finalização -->
       <div class="form-footer">
         <button type="submit">Enviar</button>
       </div>
@@ -134,11 +124,9 @@
     </form>
   </div>
 
-  <!-- Modal -->
   <div id="modal" class="modal hidden">
     <div class="modal-content"></div>
   </div>
 
-  <script src="/scripts/script.js"></script>
-</body>
+  <script src="scripts/script.js"></script> </body>
 </html>

@@ -155,7 +155,7 @@ button[type="button"] {
 .dynamic-input button {
   padding: 0.4rem 0.8rem;
   font-size: 0.9rem;
-  height: 42px;
+  height: 42px; /* Ajuste para alinhar com o input */
 }
 
 /* Utilitários */
@@ -167,17 +167,21 @@ button[type="button"] {
   color: var(--vermelho);
   font-size: 0.85rem;
   margin-top: 0.2rem;
-  display: block;
+  display: block; /* Garante que o span ocupe espaço e seja visível */
+  min-height: 1em; /* Evita que o layout "pule" quando o erro aparece/some */
 }
 
 /* Responsivo */
 @media (max-width: 600px) {
+  body {
+    padding: 1rem;
+  }
   .form-container {
     padding: 1rem;
   }
 
   input, select, textarea, button {
-    font-size: 1rem;
+    font-size: 1rem; /* Mantém o tamanho da fonte para legibilidade */
   }
 
   .dynamic-input {
@@ -185,8 +189,12 @@ button[type="button"] {
     gap: 0.3rem;
   }
 
+  .dynamic-input input {
+    width: 100%;
+  }
+  
   .dynamic-input button {
     width: 100%;
-    height: auto;
+    height: auto; /* Altura automática para botões empilhados */
   }
 }
