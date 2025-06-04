@@ -46,6 +46,7 @@ O sistema conta com um conjunto robusto de funcionalidades tanto no frontend qua
     * **Update (Atualizar)**: Formulário de edição pré-preenchido para modificar informações de uma solicitação existente.
     * **Delete (Deletar)**: Funcionalidade para remover solicitações do banco de dados, com confirmação.
 * **Mensagens de Feedback**: Notificações de sucesso ou erro para o usuário após as operações CRUD.
+* **Visualização dos Dados**: A página `view.php` é responsável por listar todas as solicitações de crédito armazenadas no banco. Ela realiza uma consulta SQL que busca os dados mais recentes e exibe essas informações em uma tabela organizada. Além de exibir os principais campos (como CNPJ, tomador, valor, data etc.), essa página também oferece ações de **edição** e **deleção**, com botões que redirecionam para os scripts apropriados (`edit_form.php` e `delete_script.php`). Também apresenta mensagens visuais de sucesso ou erro com base nas operações realizadas, contribuindo para o gerenciamento eficiente das solicitações.
 * **Segurança**: Uso de `prepared statements` (PDO) para prevenir injeção de SQL e separação de arquivos de configuração.
 
 ---
